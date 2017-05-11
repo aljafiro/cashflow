@@ -1,3 +1,5 @@
+import { ToolsService } from './../../core/shared/forms/tools.service';
+import { ValidatorsService } from './../../core/shared/forms/validators.service';
 import { UsersService } from './../users/data/users.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -16,6 +18,6 @@ import { RowComponent } from './list/row/row.component';
     UsersRoutingModule
   ],
   declarations: [UsersComponent, NewComponent, ListComponent, RowComponent],
-  providers: [UsersService]
+  providers: [UsersService, ValidatorsService, ToolsService]
 })
 export class UsersModule { }

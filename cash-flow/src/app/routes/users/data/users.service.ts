@@ -24,7 +24,7 @@ export class UsersService {
   }
 
   newUser() : User {
-    return new User(new Date(), 0, "", 1, "");
+    return new User(new Date(), "Usuario", "", 1, "");
   }
 
   saveUser(originalUser: User) : User {

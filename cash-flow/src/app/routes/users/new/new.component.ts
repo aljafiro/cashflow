@@ -1,3 +1,5 @@
+import { ToolsService } from './../../../core/shared/forms/tools.service';
+import { ValidatorsService } from './../../../core/shared/forms/validators.service';
 import { AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { User } from './../data/user.model';
@@ -16,7 +18,7 @@ export class NewComponent implements OnInit {
   public user : User;
   public userForm: FormGroup;
 
-  constructor(public usersService: UsersService, public formBuilder: FormBuilder) { }
+  constructor(public usersService: UsersService, public formBuilder: FormBuilder, public validatorsService: ValidatorsService, public toolsService: ToolsService) { }
 
   ngOnInit() {
     this.createNewUser();
@@ -36,23 +38,17 @@ export class NewComponent implements OnInit {
     const controls = {
       description: [this.user.description, Validators.required],
       name: [this.user.name, [Validators.required]],
-      date: [this.getDateForControl(this.user.date), [Validators.required]],
+      date: [this.validatorsService.getDateForControl(this.user.date), [Validators.required]],
     };
     return controls;
   }
 
   mustShowErrors(controlName: string) {
-    let hasErrorsToShow = false;
-    const control = this.getControl(controlName);
-    const hasChanges = control.dirty || control.touched;
-    if (hasChanges) {
-      hasErrorsToShow = control.errors != null;
-    }
-    return hasErrorsToShow;
+    return this.toolsService.mustShowErrors(this.userForm, controlName);
   }
 
   getControl(controlName: string): AbstractControl {
-    return this.userForm.controls[controlName];
+    return this.toolsService.getControl(this.userForm, controlName);
   }
 
   getControlErrors(controlName: string): string {
@@ -64,18 +60,6 @@ export class NewComponent implements OnInit {
       });
     }
     return controlErrors;
-  }
-
-  positiveNumber(control: AbstractControl) {
-    let error = null;
-    if (control.value !== undefined && (isNaN(control.value) || control.value < 0)) {
-      error = { 'positive': 'Must be a positive number' };
-    }
-    return error;
-  }
-
-  getDateForControl(date: Date): string {
-    return date.toISOString().substring(0, 10)
   }
 
   onSubmit() {

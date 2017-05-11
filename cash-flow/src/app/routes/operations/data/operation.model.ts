@@ -1,7 +1,9 @@
 export class Operation {
-    constructor(
-    public _id?: string,
-    public timeStamp?: Date,
-    public amount?: number) {
+  constructor(
+    public date: Date,
+    public amount: number,
+    public description: string,
+    public operationType: number,
+    public _id?: string) {
   }
 }

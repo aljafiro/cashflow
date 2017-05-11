@@ -1,3 +1,4 @@
+import { OperationsService } from './data/operations.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
     <nav>
       <a routerLink="/operations/new">->New</a>
       <a routerLink="/operations/list">   ->List</a>
+      <span class="float-right">Num Ops: <strong>{{ operationsCount }}</strong></span>
     </nav>
     <router-outlet></router-outlet>
   `,
@@ -16,9 +18,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OperationsComponent implements OnInit {
 
-  constructor() { }
+  public operationsCount = 0;
+  constructor(public operationsService: OperationsService) { }
 
   ngOnInit() {
+    this.subscribeToOperationsCount();
+  }
+
+  subscribeToOperationsCount() {
+    this.operationsService.getOperationsCount$()
+      .subscribe(data => this.operationsCount = data)
   }
 
 }

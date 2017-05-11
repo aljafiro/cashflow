@@ -4,7 +4,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
   selector: 'jfr-row',
   template: `
     <li>
-      {{ operation.amount  }} <button (click)="onDeleteClick()" >Delete</button> 
+      {{ operation.description  }}: {{ operation.amount  }}€ on {{ operation.date | date:'dd-MM-yyyy' }} <button (click)="onDeleteClick()" >Delete</button> 
     </li>
   `,
   styles: []

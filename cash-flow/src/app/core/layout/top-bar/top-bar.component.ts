@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <nav>
       <a routerLink="/">->Home</a>
       <a routerLink="/operations">->Operations</a>
+      <a routerLink="/users">   ->Users</a>
       <a routerLink="/about">   ->About</a>
     </nav>
   `,

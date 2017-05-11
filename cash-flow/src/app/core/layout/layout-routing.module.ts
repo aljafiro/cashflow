@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'operations',
     loadChildren: './../../routes/operations/operations.module#OperationsModule'
+  },
+  {
+    path: 'users',
+    loadChildren: './../../routes/users/users.module#UsersModule'
   }
 ];
 

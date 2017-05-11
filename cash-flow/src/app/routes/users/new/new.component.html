@@ -1,0 +1,52 @@
+<header>
+  <h5>Create and Save New User</h5>
+</header>
+<main>
+  <form [formGroup]="userForm"
+        (ngSubmit)="onSubmit()"
+        class="container">
+    <section name="description-control">
+      <label for="description">Description:</label>
+      <input formControlName="description"
+             type="text" />
+      <small *ngIf="userForm.get('description').invalid"
+             class="float-right">
+             Description is required
+      </small>
+    </section>
+    <section name="name-control">
+      <label for="name">Name:</label>
+      <input formControlName="name"
+             type="text" />
+      <small *ngIf="mustShowErrors('name')"
+             class="float-right">
+             Name has errors: {{ getControlErrors('name') }}
+      </small>
+    </section>
+    <section name="date-control">
+      <label for="date">Date:</label>
+      <input formControlName="date"
+             type="date" />
+      <small *ngIf="mustShowErrors('date')"
+             class="float-right">
+             Date has errors: {{ getControlErrors('date') }}
+      </small>
+    </section>
+    <button type="submit"
+            [disabled]="userForm.invalid">Save</button>
+  </form>
+  <aside class="container">
+    <em class="row">Value: </em>
+    <code class="row">
+      <strong>{{ userForm.value | json }}</strong>
+    </code>
+    <em class="row">User Model: </em>
+    <code class="row">
+      <strong>{{ user | json }}</strong>
+    </code>
+    <em class="row">Status: </em>
+    <code class="row">
+    <strong>{{ userForm.status | json }}</strong>
+  </code>
+  </aside>
+</main>

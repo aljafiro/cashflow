@@ -17,14 +17,7 @@ import { Component, OnInit } from '@angular/core';
       </ul>
     </main>
   `,
-  styles: [`
-    .pocas {
-      color: green;
-    }
-    .muchas {
-      color: red;
-    }
-  `]
+  styles: []
 })
 export class ListComponent implements OnInit {
   public operations : Operation[];

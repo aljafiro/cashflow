@@ -1,3 +1,4 @@
+import { LoginModule } from './../../routes/login/login.module';
 import { AboutModule } from './../../routes/about/about.module';
 import { HomeModule } from './../../routes/home/home.module';
 import { NgModule } from '@angular/core';
@@ -13,6 +14,7 @@ import { MainContentComponent } from './main-content/main-content.component';
     AboutModule,
     CommonModule,
     HomeModule,
+    LoginModule,
     LayoutRoutingModule
   ],
   declarations: [ShellComponent, TopBarComponent, MainContentComponent],

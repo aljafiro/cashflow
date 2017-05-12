@@ -37,7 +37,10 @@ export class ListComponent implements OnInit {
   getOperationList() {
     this.operationsService
       .getOperations$()
-      .subscribe(operations => this.operations = operations);
+      .subscribe(
+          operations => this.operations = operations,
+          error => console.log(error)
+        );
   }
 
   onDelete(operation) {
@@ -45,5 +48,4 @@ export class ListComponent implements OnInit {
       .deleteOperation$(operation)
       .subscribe(r => this.getOperationList());
   }
-
 }

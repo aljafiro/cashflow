@@ -5,16 +5,17 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'jfr-list',
   template: `
-    <div *ngIf="operations.length == 0"> No hay movimientos</div>
-    <div *ngIf="operations.length > 0" [ngClass]="{pocas:operations.length<=3,muchas:operations.length>3}"> 
-      Movimientos
-    </div>
-
-        {{operations | json}}
-    <ul class="container">
-      <jfr-row *ngFor="let operation of operations" [operation]="operation" (delete)="onDelete(operation)">
-      </jfr-row>
-    </ul>
+    <header>
+      <h5>List of operations</h5>
+    </header>
+    <main>
+      <ul class="container">
+        <jfr-row *ngFor="let operation of operations" 
+            [operation]="operation" 
+            (delete)="onDelete(operation)">
+        </jfr-row>
+      </ul>
+    </main>
   `,
   styles: [`
     .pocas {
@@ -34,12 +35,15 @@ export class ListComponent implements OnInit {
   }
 
   getOperationList() {
-    this.operations = this.operationsService.getOperations();
+    this.operationsService
+      .getOperations$()
+      .subscribe(operations => this.operations = operations);
   }
 
   onDelete(operation) {
-    this.operationsService.deleteOperation(operation);
-    this.getOperationList();
+    this.operationsService
+      .deleteOperation$(operation)
+      .subscribe(r => this.getOperationList());
   }
 
 }

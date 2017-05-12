@@ -3,45 +3,59 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { Http } from "@angular/http";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class OperationsService {
-
-  private operations: Operation[];
+  private apiUrl = 'http://localhost:3030/api/pub/items';
   private operationsCount$: BehaviorSubject<number>;
+  private operationsCount = 0;
 
-  constructor() {
-    this.operations = [];
-    this.operationsCount$ = new BehaviorSubject(0);
-    this.emitOperationCount();
+  constructor(private http: Http) {
+    this.initialize();
+  }
+
+  initialize() {
+    this.operationsCount$ = new BehaviorSubject(this.operationsCount);
+    this.getOperations$()
+      .subscribe(operations => {
+        this.operationsCount = operations.length;
+        this.emitOperationCount();
+      });
   }
 
   private cloneOperation(originalOperation: Operation): Operation{
     return Object.assign({}, originalOperation);
   }
 
-  getOperations() : Operation[] {
-    return this.operations;
+  getOperations$(): Observable<Operation[]> {
+    return this.http
+      .get(this.apiUrl)
+      .map(r => r.json());
   }
 
-  newOperation() : Operation {
+  newOperation(): Operation {
     return new Operation(new Date(), 0, "", 1, "");
   }
 
-  saveOperation(originalOperation: Operation) : Operation {
-    const targetOperation = this.cloneOperation(originalOperation);
-    targetOperation._id = new Date().getTime().toString();
-    this.operations.push(targetOperation);
-    this.emitOperationCount();
-    return targetOperation;
+  saveOperation$(newOperation: Operation): Observable<any> {
+    return this.http
+      .post(this.apiUrl, newOperation)
+      .do(r => {
+        this.operationsCount++;
+        this.emitOperationCount();
+      });
   }
 
-  deleteOperation(operation: Operation) {
-    let index: number = this.operations.indexOf(operation);
-    if (index !== -1) {
-      this.operations.splice(index, 1);
-      this.emitOperationCount();
-    }
+  deleteOperation$(operation: Operation): Observable<any> {
+    return this.http
+      .delete(`${this.apiUrl}/${operation._id}`)
+      .do(r => {
+        this.operationsCount--;
+        this.emitOperationCount();
+      });
   }
 
   getOperationsCount$(): Observable<number> {
@@ -49,6 +63,6 @@ export class OperationsService {
   }
 
   private emitOperationCount() {
-    this.operationsCount$.next(this.operations.length);
+    this.operationsCount$.next(this.operationsCount);
   }
 }

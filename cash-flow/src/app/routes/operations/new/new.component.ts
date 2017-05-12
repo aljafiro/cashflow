@@ -49,19 +49,13 @@ export class NewComponent implements OnInit {
   }
 
   getControlErrors(controlName: string): string {
-    let controlErrors = "";
-    const control = this.getControl(controlName);
-    if (control && control.errors) {
-      Object.keys(control.errors).forEach(error => {
-        controlErrors += error;
-      });
-    }
-    return controlErrors;
+    return this.toolsService.getControlErrors(this.operationForm, controlName);
   }
 
   onSubmit() {
     this.operation = this.operationForm.value;
-    this.operationsService.saveOperation(this.operation);
-    this.createNewOperation();
+    this.operationsService
+      .saveOperation$(this.operation)
+      .subscribe(r => this.createNewOperation());
   }
 }
